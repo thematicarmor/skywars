@@ -1,5 +1,8 @@
 package us.potatoboy.skywars.game;
 
+import bond.thematic.minigamemanager.kit.Kit;
+import bond.thematic.minigamemanager.kit.KitRegistry;
+import bond.thematic.minigamemanager.kit.game.ui.KitSelectorUI;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
@@ -21,9 +24,6 @@ import net.minecraft.world.GameRules;
 import us.potatoboy.skywars.game.map.SkyWarsMap;
 import us.potatoboy.skywars.game.map.SkyWarsMapGenerator;
 import us.potatoboy.skywars.game.map.loot.LootHelper;
-import us.potatoboy.skywars.game.ui.KitSelectorUI;
-import us.potatoboy.skywars.kit.Kit;
-import us.potatoboy.skywars.kit.KitRegistry;
 import xyz.nucleoid.fantasy.RuntimeWorldConfig;
 import xyz.nucleoid.plasmid.game.GameOpenContext;
 import xyz.nucleoid.plasmid.game.GameOpenProcedure;
@@ -64,7 +64,7 @@ public class SkyWarsWaiting {
         this.spawnLogic = new SkyWarsSpawnLogic(gameSpace, map);
         this.participants = new Object2ObjectOpenHashMap<>();
 
-        config.kits().ifLeft(kits -> this.kits.addAll(kits.stream().map(KitRegistry::get).collect(Collectors.toList())));
+        config.kits().ifLeft(kits -> this.kits.addAll(kits.stream().map(KitRegistry::get).toList()));
 
         config.kits().ifRight(allKits -> {
             if (allKits) {
@@ -105,7 +105,7 @@ public class SkyWarsWaiting {
         SkyWarsPlayer participant = participants.get(PlayerRef.of(playerEntity));
 
         if (participant != null && playerEntity.getInventory().getMainHandStack().getItem() == Items.COMPASS) {
-            KitSelectorUI.openSelector(playerEntity, this);
+            KitSelectorUI.openSelector(playerEntity);
         }
 
         return TypedActionResult.pass(playerEntity.getStackInHand(hand));

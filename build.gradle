@@ -15,6 +15,7 @@ repositories {
     maven { url = "https://jitpack.io/" }
     maven { url = "https://maven.nucleoid.xyz/" }
     maven { url = "https://maven.gegy.dev/" }
+    maven { url = "https://repo.anutley.me/snapshots"}
 }
 
 dependencies {
@@ -28,6 +29,9 @@ dependencies {
 
     // Plasmid
     modImplementation "xyz.nucleoid:plasmid:${project.plasmid_version}"
+
+    // Minigame manager lib (kits/loottables)
+    modImplementation "bond.thematic:minigame-manager:1.0-SNAPSHOT"
 }
 
 processResources {
@@ -66,7 +70,7 @@ java {
 // configure the maven publication
 publishing {
     publications {
-        mavenJava(MavenPublication) {
+        maven(MavenPublication) {
             // add all the jars that should be included when publishing to maven
             artifact(remapJar) {
                 builtBy remapJar
@@ -81,5 +85,14 @@ publishing {
     repositories {
         // uncomment to publish to the local maven
         // mavenLocal()
+        maven {
+            var type = version.toString().endsWith("-SNAPSHOT") ? "snapshots" : "releases"
+            url = "https://repo.anutley.me/" + type
+
+            credentials {
+                username = System.getenv("MAVEN_USERNAME")
+                password = System.getenv("MAVEN_PASSWORD")
+            }
+        }
     }
 }

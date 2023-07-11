@@ -1,5 +1,6 @@
 package us.potatoboy.skywars.game;
 
+import bond.thematic.minigamemanager.entity.MinigamePlayer;
 import com.google.common.collect.ImmutableSet;
 import it.unimi.dsi.fastutil.objects.Object2ObjectMap;
 import it.unimi.dsi.fastutil.objects.Object2ObjectOpenHashMap;
@@ -130,7 +131,7 @@ public class SkyWarsStageManager {
                     var playerEntity = game.getPlayer(playerRef);
                     playerEntity.changeGameMode(GameMode.SURVIVAL);
 
-                    SkyWarsPlayer participant = game.participants.get(playerRef);
+                    MinigamePlayer participant = new MinigamePlayer(playerEntity);
                     if (participant.selectedKit != null) {
                         participant.selectedKit.equipPlayer(playerEntity);
                     }
